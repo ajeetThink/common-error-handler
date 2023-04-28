@@ -1,45 +1,25 @@
-name: NPM Package Deploy
-
-# Define the event that triggers the workflow
+name: Deploy npm library
 on:
   push:
     branches:
       - master
 
-# Define the workflow steps
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    # Checkout the code
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Install dependencies and build package
-      - name: Install dependencies and build package
-        run: |
-          yarn install
-          yarn build
-
-      # Publish the package to NPM registry
-      - name: Publish package to NPM registry
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
-        run: |
-          yarn publish --access public
-
   deploy:
     runs-on: ubuntu-latest
-    needs: build
-
-    # Checkout the code
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      # Install dependencies and deploy package
-      - name: Install dependencies and deploy package
-        run: |
-          yarn install
-          yarn deploy
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile --ignore-scripts
+
+    - name: Build
+      run: yarn build
+
+    - name: Publish to npm
+      run: |
+        yarn publish --access public --non-interactive --no-progress --registry https://registry.npmjs.org/ --tolerate-republish --new-version ${{ github.ref_name }}
+
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
