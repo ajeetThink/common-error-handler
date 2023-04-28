@@ -1,6 +1,6 @@
 {
   "name": "common-error-handler",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "dist/index.js",
   "author": "Ajeet Karmur",
   "scripts": {
