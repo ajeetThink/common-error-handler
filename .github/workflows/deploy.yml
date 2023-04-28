@@ -19,7 +19,5 @@ jobs:
 
     - name: Publish to npm
       run: |
-        yarn publish --access public --non-interactive --no-progress --registry https://registry.npmjs.org/ --tolerate-republish --new-version ${{ github.ref_name }}
-
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" | yarn config set registry $(yarn config get registry)
+        npm publish --access public --non-interactive --no-progress
