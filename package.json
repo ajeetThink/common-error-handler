@@ -3,6 +3,7 @@
   "version": "1.0.3",
   "main": "dist/index.js",
   "author": "Ajeet Karmur",
+  "repository": "https://github.com/ajeetThink/common-error-handler",
   "scripts": {
     "build": "tsc"
   },
