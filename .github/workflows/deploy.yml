@@ -5,19 +5,25 @@ on:
       - master
 
 jobs:
-  deploy:
+  publish-npm:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout repo
+        uses: actions/checkout@v1
 
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile --ignore-scripts
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          registry-url: 'https://registry.npmjs.org'
 
-    - name: Build
-      run: yarn build
+      - name: Installing NPM deps
+        run: yarn
 
-    - name: Publish to npm
-      run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Build modules
+        run: yarn build
+
+      - name: Publishing on NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
